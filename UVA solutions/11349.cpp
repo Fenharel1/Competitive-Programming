@@ -1,38 +1,42 @@
 #include <bits/stdc++.h>
+#define REP(i,n) for(i = 0; i < n; i++) 
+#define max3(a,b,c) max(a,max(b,c))
 using namespace std;
 
 int main(){
-  ios_base::sync_with_stdio(false);
-  cin.tie(nullptr);
-  int tc; 
-  cin >> tc;
-  cin.ignore();
-  long long arr[105][105];
-  char aux, aux2; 
-  int n, TC = 1; 
-  bool sym = true;
-  string str;
-  int i = 0, j = 0;
-  while(tc--){
-    cin >> aux >> aux2 >> n;
-    sym = true;
-    for(i = 0; i < n; i++){
-      if(!sym){
-        cin.ignore();
-        getline(cin, str);
-      }else{
-        for(j = 0; j < n ; j++){ 
-          cin >> arr[i][j] ;
-          if(!sym) continue;
-          if(arr[i][j] < 0) sym = false;
-          if(i>=n/2){
-            if(n%2!=0 && i == n/2 && j < n/2) continue;
-            if(arr[i][j] != arr[abs(n-i-1)][abs(n-j-1)]){sym = false;}
-          }
-        }
+  int tc; cin >> tc;
+  for(int TC = 1; TC <= tc; TC++){
+    char _; cin >> _ >> _;
+    int n; cin >> n;
+    long m[n][n];
+    int i,j;
+    REP(i,n){
+      REP(j,n){
+        cin >> m[i][j];
       }
-    } 
-    printf("Test #%d: %s.\n", TC++, (sym ? "Symmetric" : "Non-symmetric"));
-  } 
+    }
+    bool ans = true;
+    if(n%2!=0){
+      for(int i = 0; i < n/2; i++){
+        if(m[n/2][i] != m[n/2][n-i-1]) ans = false;
+        if(m[i][n/2] != m[n-i-1][n/2]) ans = false;
+      }
+    }
+    if(!ans) {
+      cout << "Test #" << TC << ": Symmetric." << endl;
+      continue;
+    }
+    for(int i = 0; i < n/2 && ans; i++){
+      for(int j = 0; j < n && ans; j++){
+        if(m[i][j] != m[n-i-1][n-j-1]) ans = false;
+        if(m[n-i-1][n-j-1] != m[i][j]) ans = false;
+      }
+    }
+    if(ans){
+      cout << "Test #" << TC << ": Symmetric." << endl;
+    }else{
+      cout << "Test #" << TC << ": Non-symmetric." << endl;
+    }
+  }
   return 0;
 }
